@@ -4,9 +4,13 @@
 
 A gentle five-minute daily session — a mood and sleep check-in, a delayed word-recall exercise, a verbal fluency task, and a reminiscence prompt — followed by a progress view that celebrates consistency over scores.
 
-> **Live demo:** _add your GitHub Pages link here after deploying_
+> **Live demo:** [namoos99.github.io/cognitive-companion](https://namoos99.github.io/cognitive-companion/)
 
-_Screenshots go here — one of the welcome screen, one of the progress chart, and one with large-text mode enabled._
+<p align="center">
+  <img src="screenshots/welcome.png" width="32%" alt="Welcome screen" />
+  <img src="screenshots/words.png" width="32%" alt="Word recall exercise" />
+  <img src="screenshots/reflect.png" width="32%" alt="Reminiscence prompt" />
+</p>
 
 ## Why this exists
 
