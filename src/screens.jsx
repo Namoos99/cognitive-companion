@@ -359,9 +359,10 @@ export function Settings({ S, apiKey, onApiKeyChange, status, onSave, onHome }) 
     <div style={S.card}>
       <h1 style={S.h1}>Settings</h1>
       <p style={S.body}>
-        The app works fully without any setup. If you'd like fresh exercises
-        generated each day by Claude, you can add an Anthropic API key. It is
-        stored only on this device.
+       The app works fully without any setup. If you'd like fresh exercises
+        generated each day by Claude, a family member or caregiver can add an
+        Anthropic API key here — the project's Setup Guide walks through it
+        step by step. The key is stored only on this device.
       </p>
       <label
         style={{ ...S.body, fontSize: S.fs(17), fontWeight: 700, display: "block", marginTop: "10px" }}

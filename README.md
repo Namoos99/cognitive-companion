@@ -12,6 +12,8 @@ A gentle five-minute daily session — a mood and sleep check-in, a delayed word
   <img src="screenshots/reflect.png" width="32%" alt="Reminiscence prompt" />
 </p>
 
+> **Setting it up for a loved one?** See the plain-language [Setup Guide for Families and Caregivers](SETUP_GUIDE.md).
+
 ## Why this exists
 
 Evidence that "brain training" prevents dementia is mixed, and this project doesn't pretend otherwise. What is better supported is that regular cognitive engagement, physical activity, sleep, and social connection are associated with healthier cognitive aging. Daily Companion is deliberately framed as a **wellness companion, not a screening or diagnostic tool** — it borrows the *shape* of exercises like delayed recall and verbal fluency because they're engaging and meaningful, without imitating clinical instruments like the MoCA or MMSE.
