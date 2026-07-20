@@ -1,5 +1,6 @@
 import React from "react";
 import { C } from "./theme.js";
+import { todayKey } from "./storage.js";
 
 // Every screen is a top-level component. This is the permanent fix
 // for the focus-loss bug from the prototype: components defined
@@ -258,12 +259,22 @@ export function Summary({ S, recallScore, fluencyCount, category, nudge, onProgr
 }
 
 export function Progress({ S, history, onHome }) {
-  const recent = history.slice(-14);
+  // Build the last 14 CALENDAR days and map saved entries onto them,
+  // so days without a session appear as rest-day dots instead of
+  // silently disappearing from the chart.
+  const recent = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = todayKey(d);
+    const entry = history.find((e) => e.date === key);
+    recent.push(entry || { date: key, recall: null, checkedIn: false });
+  }
   const checkins = recent.filter((d) => d.checkedIn).length;
   return (
     <div style={S.card}>
       <h1 style={S.h1}>My progress</h1>
-      {recent.length === 0 ? (
+      {history.length === 0 ? (
         <p style={S.body}>
           Your progress will appear here after your first session. Today is a
           lovely day to start.
