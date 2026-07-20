@@ -259,9 +259,7 @@ export function Summary({ S, recallScore, fluencyCount, category, nudge, onProgr
 }
 
 export function Progress({ S, history, onHome }) {
-  // Build the last 14 CALENDAR days and map saved entries onto them,
-  // so days without a session appear as rest-day dots instead of
-  // silently disappearing from the chart.
+  // Last 14 CALENDAR days, with missing days shown as rest-day dots.
   const recent = [];
   for (let i = 13; i >= 0; i--) {
     const d = new Date();
@@ -271,6 +269,24 @@ export function Progress({ S, history, onHome }) {
     recent.push(entry || { date: key, recall: null, checkedIn: false });
   }
   const checkins = recent.filter((d) => d.checkedIn).length;
+
+  // Tap-to-reveal day details. Hover tooltips are invisible on touch
+  // devices and undiscoverable for many users; tapping a bar shows the
+  // day's details in a panel below the chart instead.
+  const [selected, setSelected] = React.useState(null);
+
+  const friendly = (key) => {
+    const [y, m, d] = key.split("-").map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const todayIso = todayKey();
+  const selectedDay = recent.find((x) => x.date === selected);
+
   return (
     <div style={S.card}>
       <h1 style={S.h1}>My progress</h1>
@@ -287,7 +303,7 @@ export function Progress({ S, history, onHome }) {
             {checkins >= recent.length * 0.6 ? "Wonderful consistency." : "Every visit counts."}
           </p>
           <p style={{ ...S.body, fontSize: S.fs(16), color: C.teal }}>
-            Words remembered each day (out of 5):
+            Words remembered each day (out of 5). Tap any day for details:
           </p>
           <div
             style={{
@@ -300,11 +316,17 @@ export function Progress({ S, history, onHome }) {
               borderBottom: `2px solid ${C.line}`,
             }}
           >
-            {recent.map((d, i) => {
-              const isToday = d.date === recent[recent.length - 1].date;
+            {recent.map((d) => {
+              const isToday = d.date === todayIso;
+              const isSelected = selected === d.date;
               return (
-                <div
-                  key={i}
+                <button
+                  key={d.date}
+                  onClick={() => setSelected(isSelected ? null : d.date)}
+                  aria-label={`${friendly(d.date)}: ${
+                    d.recall === null ? "rest day" : `${d.recall} of 5 words`
+                  }`}
+                  aria-pressed={isSelected}
                   style={{
                     flex: 1,
                     display: "flex",
@@ -312,8 +334,14 @@ export function Progress({ S, history, onHome }) {
                     alignItems: "center",
                     justifyContent: "flex-end",
                     height: "100%",
+                    background: isSelected ? "#fff" : "transparent",
+                    border: "none",
+                    borderRadius: "8px",
+                    outline: isSelected ? `3px solid ${C.terracotta}` : "none",
+                    outlineOffset: "2px",
+                    cursor: "pointer",
+                    padding: 0,
                   }}
-                  title={`${d.date}: ${d.recall === null ? "rest day" : `${d.recall} of 5`}`}
                 >
                   {d.recall !== null ? (
                     <div
@@ -336,7 +364,7 @@ export function Progress({ S, history, onHome }) {
                       }}
                     />
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
@@ -349,12 +377,39 @@ export function Progress({ S, history, onHome }) {
               marginTop: "6px",
             }}
           >
-            <span>{recent[0]?.date}</span>
-            <span>{recent[recent.length - 1]?.date}</span>
+            <span>{friendly(recent[0].date)}</span>
+            <span>Today</span>
+          </div>
+          <div
+            aria-live="polite"
+            style={{
+              background: "#fff",
+              border: `2px solid ${selectedDay ? C.sage : C.line}`,
+              borderRadius: "14px",
+              padding: "14px",
+              marginTop: "14px",
+              minHeight: "56px",
+            }}
+          >
+            {selectedDay ? (
+              <p style={{ ...S.body, margin: 0, fontSize: S.fs(18) }}>
+                <strong>{friendly(selectedDay.date)}:</strong>{" "}
+                {selectedDay.recall === null
+                  ? "a rest day. Those are okay too."
+                  : `you remembered ${selectedDay.recall} of 5 words` +
+                    (selectedDay.fluency
+                      ? ` and named ${selectedDay.fluency} in the category game.`
+                      : ".")}
+              </p>
+            ) : (
+              <p style={{ ...S.body, margin: 0, fontSize: S.fs(16), color: C.teal }}>
+                Tap a bar or dot above to see that day's details here.
+              </p>
+            )}
           </div>
           <p style={{ ...S.body, fontSize: S.fs(15), color: C.teal, marginTop: "14px" }}>
-            Small dots are rest days — those are okay too. Scores naturally go
-            up and down; what helps most is coming back regularly.
+            Small dots are rest days. Scores naturally go up and down; what
+            helps most is coming back regularly.
           </p>
         </>
       )}
@@ -370,10 +425,9 @@ export function Settings({ S, apiKey, onApiKeyChange, status, onSave, onHome }) 
     <div style={S.card}>
       <h1 style={S.h1}>Settings</h1>
       <p style={S.body}>
-       The app works fully without any setup. If you'd like fresh exercises
-        generated each day by Claude, a family member or caregiver can add an
-        Anthropic API key here — the project's Setup Guide walks through it
-        step by step. The key is stored only on this device.
+        The app works fully without any setup. If you'd like fresh exercises
+        generated each day by Claude, you can add an Anthropic API key. It is
+        stored only on this device.
       </p>
       <label
         style={{ ...S.body, fontSize: S.fs(17), fontWeight: 700, display: "block", marginTop: "10px" }}
