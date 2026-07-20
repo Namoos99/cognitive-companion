@@ -259,9 +259,25 @@ export function Summary({ S, recallScore, fluencyCount, category, nudge, onProgr
 }
 
 export function Progress({ S, history, onHome }) {
-  // Last 14 CALENDAR days, with missing days shown as rest-day dots.
+  // Chart window: starts at the user's FIRST session date (so a new
+  // user never sees "missed" days from before they began) and grows to
+  // a sliding 14-day window over time. Missing days inside the window
+  // show as rest-day dots.
+  const todayStamp = todayKey();
+  const earliest = history.reduce(
+    (min, e) => (e.date < min ? e.date : min),
+    todayStamp
+  );
+  const [ey, em, ed] = earliest.split("-").map(Number);
+  const startOfEarliest = new Date(ey, em - 1, ed);
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const span = Math.min(
+    13,
+    Math.max(0, Math.round((startOfToday - startOfEarliest) / 86400000))
+  );
   const recent = [];
-  for (let i = 13; i >= 0; i--) {
+  for (let i = span; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = todayKey(d);
@@ -297,11 +313,19 @@ export function Progress({ S, history, onHome }) {
         </p>
       ) : (
         <>
-          <p style={S.body}>
-            You've checked in <strong>{checkins}</strong> of the last{" "}
-            <strong>{recent.length}</strong> days.{" "}
-            {checkins >= recent.length * 0.6 ? "Wonderful consistency." : "Every visit counts."}
-          </p>
+          {recent.length === 1 ? (
+            <p style={S.body}>
+              You completed your first session today. Wonderful start.
+            </p>
+          ) : (
+            <p style={S.body}>
+              You've checked in <strong>{checkins}</strong> of the last{" "}
+              <strong>{recent.length}</strong> days.{" "}
+              {checkins >= recent.length * 0.6
+                ? "Wonderful consistency."
+                : "Every visit counts."}
+            </p>
+          )}
           <p style={{ ...S.body, fontSize: S.fs(16), color: C.teal }}>
             Words remembered each day (out of 5). Tap any day for details:
           </p>
