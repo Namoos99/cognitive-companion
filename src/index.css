@@ -11,7 +11,7 @@ body,
 }
 
 body {
-  background: #efe7d6;
+  background: #FFDE59;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -19,7 +19,7 @@ body {
 button:focus-visible,
 textarea:focus-visible,
 input:focus-visible {
-  outline: 3px solid #c4622d;
+  outline: 3px solid #70091D;
   outline-offset: 2px;
 }
 
