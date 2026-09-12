@@ -279,10 +279,22 @@ export function Summary({ S, recallScore, fluencyCount, category, nudge, onProgr
 }
 
 export function Progress({ S, history, onHome }) {
+  // Overview screens (welcome, progress, settings) use the blue brand
+  // card; exercise screens stay near-white, since that's where the
+  // reading and the actual tasks happen.
+  const card = { ...S.card, background: C.teal, border: `1px solid ${C.teal}` };
+  const heading = { ...S.h1, color: "#FFFFFF" };
+  const body = { ...S.body, color: "#FFFFFF" };
+  const muted = { ...S.body, color: "rgba(255, 255, 255, 0.9)" };
+  const ghost = {
+    ...S.quietButton,
+    color: C.yellow,
+    border: `2px solid ${C.yellow}`,
+  };
+
   // Chart window: starts at the user's FIRST session date (so a new
   // user never sees "missed" days from before they began) and grows to
-  // a sliding 14-day window over time. Missing days inside the window
-  // show as rest-day dots.
+  // a sliding 14-day window over time.
   const todayStamp = todayKey();
   const earliest = history.reduce(
     (min, e) => (e.date < min ? e.date : min),
@@ -306,9 +318,6 @@ export function Progress({ S, history, onHome }) {
   }
   const checkins = recent.filter((d) => d.checkedIn).length;
 
-  // Tap-to-reveal day details. Hover tooltips are invisible on touch
-  // devices and undiscoverable for many users; tapping a bar shows the
-  // day's details in a panel below the chart instead.
   const [selected, setSelected] = React.useState(null);
 
   const friendly = (key) => {
@@ -320,25 +329,24 @@ export function Progress({ S, history, onHome }) {
     });
   };
 
-  const todayIso = todayKey();
   const selectedDay = recent.find((x) => x.date === selected);
 
   return (
-    <div style={S.card}>
-      <h1 style={S.h1}>My progress</h1>
+    <div style={card}>
+      <h1 style={heading}>My progress</h1>
       {history.length === 0 ? (
-        <p style={S.body}>
+        <p style={body}>
           Your progress will appear here after your first session. Today is a
           lovely day to start.
         </p>
       ) : (
         <>
           {recent.length === 1 ? (
-            <p style={S.body}>
+            <p style={body}>
               You completed your first session today. Wonderful start.
             </p>
           ) : (
-            <p style={S.body}>
+            <p style={body}>
               You've checked in <strong>{checkins}</strong> of the last{" "}
               <strong>{recent.length}</strong> days.{" "}
               {checkins >= recent.length * 0.6
@@ -346,7 +354,7 @@ export function Progress({ S, history, onHome }) {
                 : "Every visit counts."}
             </p>
           )}
-          <p style={{ ...S.body, fontSize: S.fs(16), color: C.teal }}>
+          <p style={{ ...muted, fontSize: S.fs(16) }}>
             Words remembered each day (out of 5). Tap any day for details:
           </p>
           <div
@@ -357,11 +365,10 @@ export function Progress({ S, history, onHome }) {
               height: "140px",
               marginTop: "8px",
               paddingBottom: "6px",
-              borderBottom: `2px solid ${C.line}`,
+              borderBottom: "2px solid rgba(255, 255, 255, 0.4)",
             }}
           >
             {recent.map((d) => {
-              const isToday = d.date === todayIso;
               const isSelected = selected === d.date;
               return (
                 <button
@@ -378,10 +385,12 @@ export function Progress({ S, history, onHome }) {
                     alignItems: "center",
                     justifyContent: "flex-end",
                     height: "100%",
-                    background: isSelected ? "#fff" : "transparent",
+                    background: isSelected
+                      ? "rgba(255, 255, 255, 0.18)"
+                      : "transparent",
                     border: "none",
                     borderRadius: "8px",
-                    outline: isSelected ? `3px solid ${C.terracotta}` : "none",
+                    outline: isSelected ? "3px solid #FFFFFF" : "none",
                     outlineOffset: "2px",
                     cursor: "pointer",
                     padding: 0,
@@ -393,7 +402,7 @@ export function Progress({ S, history, onHome }) {
                         width: "100%",
                         maxWidth: "26px",
                         height: `${(d.recall / 5) * 100}%`,
-                        background: isToday ? C.terracotta : C.teal,
+                        background: C.yellow,
                         borderRadius: "6px 6px 0 0",
                       }}
                     />
@@ -403,7 +412,7 @@ export function Progress({ S, history, onHome }) {
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        background: C.sage,
+                        background: "rgba(255, 255, 255, 0.55)",
                         marginBottom: "2px",
                       }}
                     />
@@ -417,7 +426,7 @@ export function Progress({ S, history, onHome }) {
               display: "flex",
               justifyContent: "space-between",
               fontSize: S.fs(14),
-              color: C.teal,
+              color: "rgba(255, 255, 255, 0.9)",
               marginTop: "6px",
             }}
           >
@@ -427,8 +436,8 @@ export function Progress({ S, history, onHome }) {
           <div
             aria-live="polite"
             style={{
-              background: "#fff",
-              border: `2px solid ${selectedDay ? C.sage : C.line}`,
+              background: C.card,
+              border: `2px solid ${selectedDay ? C.yellow : C.line}`,
               borderRadius: "14px",
               padding: "14px",
               marginTop: "14px",
@@ -451,13 +460,13 @@ export function Progress({ S, history, onHome }) {
               </p>
             )}
           </div>
-          <p style={{ ...S.body, fontSize: S.fs(15), color: C.teal, marginTop: "14px" }}>
+          <p style={{ ...muted, fontSize: S.fs(15), marginTop: "14px" }}>
             Small dots are rest days. Scores naturally go up and down; what
             helps most is coming back regularly.
           </p>
         </>
       )}
-      <button style={S.quietButton} onClick={onHome}>
+      <button style={ghost} onClick={onHome}>
         Back to home
       </button>
     </div>
@@ -465,16 +474,26 @@ export function Progress({ S, history, onHome }) {
 }
 
 export function Settings({ S, apiKey, onApiKeyChange, status, onSave, onHome }) {
+  const card = { ...S.card, background: C.teal, border: `1px solid ${C.teal}` };
+  const heading = { ...S.h1, color: "#FFFFFF" };
+  const body = { ...S.body, color: "#FFFFFF" };
+  const ghost = {
+    ...S.quietButton,
+    color: C.yellow,
+    border: `2px solid ${C.yellow}`,
+  };
+
   return (
-    <div style={S.card}>
-      <h1 style={S.h1}>Settings</h1>
-      <p style={S.body}>
+    <div style={card}>
+      <h1 style={heading}>Settings</h1>
+      <p style={body}>
         The app works fully without any setup. If you'd like fresh exercises
-        generated each day by Claude, you can add an Anthropic API key. It is
-        stored only on this device.
+        generated each day by Claude, a family member or caregiver can add an
+        Anthropic API key here — the project's Setup Guide walks through it
+        step by step. The key is stored only on this device.
       </p>
       <label
-        style={{ ...S.body, fontSize: S.fs(17), fontWeight: 700, display: "block", marginTop: "10px" }}
+        style={{ ...body, fontSize: S.fs(17), fontWeight: 700, display: "block", marginTop: "10px" }}
         htmlFor="api-key"
       >
         Anthropic API key (optional)
@@ -493,20 +512,23 @@ export function Settings({ S, apiKey, onApiKeyChange, status, onSave, onHome }) 
           padding: "12px 14px",
           borderRadius: "14px",
           border: `2px solid ${C.line}`,
-          background: "#fff",
+          background: C.card,
           color: C.forest,
           marginTop: "8px",
         }}
       />
       {status && (
-        <p style={{ ...S.body, fontSize: S.fs(16), color: C.teal, marginTop: "10px" }} aria-live="polite">
+        <p
+          style={{ ...S.body, fontSize: S.fs(16), color: C.yellow, marginTop: "10px" }}
+          aria-live="polite"
+        >
           {status}
         </p>
       )}
-      <button style={S.bigButton()} onClick={onSave}>
+      <button style={S.bigButton(C.yellow, C.forest)} onClick={onSave}>
         Save settings
       </button>
-      <button style={S.quietButton} onClick={onHome}>
+      <button style={ghost} onClick={onHome}>
         Back to home
       </button>
     </div>
