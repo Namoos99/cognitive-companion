@@ -245,7 +245,7 @@ export default function App() {
             fontFamily: "'Fraunces', Georgia, serif",
             fontSize: S.fs(20),
             fontWeight: 600,
-            color: C.yellow,
+            color: C.tealDark,
           }}
         >
           Daily Companion
@@ -290,21 +290,20 @@ export default function App() {
                   borderRadius: "4px",
                   // White track on the yellow page; the current step is
                   // burgundy so position stays obvious at a glance.
-                  // On the blue page: yellow marks the current step,
-                  // solid white marks completed, translucent white is
-                  // still to come.
+                  // All burgundy: solid marks the current step, and
+                  // lighter tints show what's done and what's ahead.
                   background:
                     i === stepIndex
-                      ? C.yellow
+                      ? C.terracotta
                       : i < stepIndex
-                      ? "#FFFFFF"
-                      : "rgba(255, 255, 255, 0.4)",
+                      ? "rgba(112, 9, 29, 0.55)"
+                      : "rgba(112, 9, 29, 0.18)",
                 }}
               />
               <span
                 style={{
                   fontSize: S.fs(13),
-                  color: i === stepIndex ? C.yellow : C.onSand,
+                  color: i === stepIndex ? C.terracotta : C.tealDark,
                   fontWeight: i === stepIndex ? 700 : 400,
                 }}
               >

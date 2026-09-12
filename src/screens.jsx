@@ -20,22 +20,24 @@ const SLEEP = [
 ];
 
 export function Welcome({ S, greeting, doneToday, onStart, onProgress, onSettings }) {
-  // The welcome screen is the branded hero: yellow card on the blue
-  // page, with the burgundy primary button as the single strong accent.
+  // The welcome screen is the branded hero: blue card on the yellow
+  // page, white text, yellow buttons (solid = primary, outlined = the
+  // two secondary actions, so hierarchy survives the single colour).
   // Task screens stay on the near-white card, because that's where the
   // actual reading happens.
-  // Contrast here: ink on yellow 12.7:1, white on burgundy 11.7:1.
+  // Contrast here: white on blue 8.1:1, yellow on blue 6.1:1,
+  // ink on the yellow button 12.7:1.
   const card = {
     ...S.card,
-    background: C.yellow,
-    border: `1px solid ${C.yellow}`,
+    background: C.teal,
+    border: `1px solid ${C.teal}`,
   };
-  const heading = { ...S.h1, color: C.forest };
-  const body = { ...S.body, color: C.forest };
+  const heading = { ...S.h1, color: "#FFFFFF" };
+  const body = { ...S.body, color: "#FFFFFF" };
   const ghost = {
     ...S.quietButton,
-    color: C.tealDark,
-    border: `2px solid ${C.tealDark}`,
+    color: C.yellow,
+    border: `2px solid ${C.yellow}`,
   };
 
   return (
@@ -46,7 +48,7 @@ export function Welcome({ S, greeting, doneToday, onStart, onProgress, onSetting
           ? "You've already completed today's session — wonderful. You're welcome to do another round, or look back at your progress."
           : "Ready for today's session? It takes about five minutes, and you can go at your own pace."}
       </p>
-      <button style={S.bigButton(C.terracotta, "#FFFFFF")} onClick={onStart}>
+      <button style={S.bigButton(C.yellow, C.forest)} onClick={onStart}>
         {doneToday ? "Do another session" : "Start today's session"}
       </button>
       <button style={ghost} onClick={onProgress}>
