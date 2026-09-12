@@ -288,22 +288,14 @@ export default function App() {
                 style={{
                   height: "8px",
                   borderRadius: "4px",
-                  // White track on the yellow page; the current step is
-                  // burgundy so position stays obvious at a glance.
-                  // All burgundy: solid marks the current step, and
-                  // lighter tints show what's done and what's ahead.
                   background:
-                    i === stepIndex
-                      ? C.terracotta
-                      : i < stepIndex
-                      ? "rgba(112, 9, 29, 0.55)"
-                      : "rgba(112, 9, 29, 0.18)",
+                    i < stepIndex ? C.sage : i === stepIndex ? C.terracotta : C.line,
                 }}
               />
               <span
                 style={{
                   fontSize: S.fs(13),
-                  color: i === stepIndex ? C.terracotta : C.tealDark,
+                  color: i === stepIndex ? C.forest : C.teal,
                   fontWeight: i === stepIndex ? 700 : 400,
                 }}
               >
@@ -322,7 +314,7 @@ export default function App() {
       <p
         style={{
           fontSize: S.fs(14),
-          color: C.onSand,
+          color: C.teal,
           maxWidth: "560px",
           textAlign: "center",
           marginTop: "18px",

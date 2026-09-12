@@ -3,29 +3,14 @@
 // warm sand background is high-contrast without the glare of pure
 // white, which matters for aging eyes.
 export const C = {
-  // Brand palette from the Daily Companion logo:
-  //   blue #004AAD, yellow #FFDE59, burgundy #70091D
-  //
-  // Structure: YELLOW is the page, the BLUE card is the welcome hero
-  // (white text, yellow buttons), NEAR-WHITE cards carry all the
-  // reading on task screens, and BURGUNDY marks progress and accents.
-  //
-  // Measured contrast — ink on card ~15:1, blue on card 7.9:1,
-  // burgundy on card 11.7:1, white on blue page 8.1:1, yellow on blue
-  // page 6.1:1, ink on yellow card 12.7:1, white on burgundy 11.7:1.
-  //
-  // Key names are inherited from the original palette so components
-  // pick up the brand without edits.
-  forest: "#1C1B2E",     // body text on light surfaces
-  teal: "#004AAD",       // brand blue: primary buttons, secondary text
-  tealDark: "#00347A",   // deeper blue
-  terracotta: "#70091D", // brand burgundy: accents, today, focus rings
-  sage: "#9BB4E0",       // soft blue: secondary borders on cards
-  sand: "#FFDE59",       // page background (brand yellow)
-  card: "#FFFDF7",       // card surface: near-white for readable text
-  line: "#E8CE7A",       // warm gold: borders and dividers
-  yellow: "#FFDE59",     // brand yellow: welcome hero, current step
-  onSand: "#00347A",     // text that sits directly on the yellow page
+  forest: "#1C2B2D",
+  teal: "#3D6B6E",
+  tealDark: "#2E5457",
+  terracotta: "#C4622D",
+  sage: "#8FAF9F",
+  sand: "#EFE7D6",
+  card: "#FBF7EE",
+  line: "#D8CDB6",
 };
 
 // All type sizes route through a user-controlled scale (the A+ toggle).
