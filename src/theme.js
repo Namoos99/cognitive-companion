@@ -3,25 +3,30 @@
 // warm sand background is high-contrast without the glare of pure
 // white, which matters for aging eyes.
 export const C = {
-  // Brand palette (matches the Daily Companion logo):
-  //   yellow #FFDE59, blue #004AAD, burgundy #70091D
+  // Brand palette from the Daily Companion logo:
+  //   blue #004AAD, yellow #FFDE59, burgundy #70091D
   //
-  // Yellow is used as the page FRAME, not as a reading surface.
-  // Large fields of saturated yellow cause glare fatigue, which matters
-  // more for aging eyes; text always sits on the near-white card.
-  // Measured contrast on the card: body ink ~15:1, blue 7.9:1,
-  // burgundy 11.7:1, muted blue 8.5:1. White on blue buttons: 8.1:1.
+  // Structure: BLUE is the page (a receding colour, easy on the eye at
+  // full-screen size), NEAR-WHITE cards carry all the reading, YELLOW
+  // is the welcome hero, BURGUNDY is the accent that marks "this one".
+  // Text never sits on a saturated field it has to be read off of.
   //
-  // Key names are kept from the original palette so every component
-  // picks up the rebrand without touching a single other file.
-  forest: "#1C1B2E",     // body text: near-black with a blue cast
+  // Measured contrast — ink on card ~15:1, blue on card 7.9:1,
+  // burgundy on card 11.7:1, white on blue page 8.1:1, yellow on blue
+  // page 6.1:1, ink on yellow card 12.7:1, white on burgundy 11.7:1.
+  //
+  // Key names are inherited from the original palette so components
+  // pick up the brand without edits.
+  forest: "#1C1B2E",     // body text on light surfaces
   teal: "#004AAD",       // brand blue: primary buttons, secondary text
-  tealDark: "#00347A",   // deeper blue: app title
+  tealDark: "#00347A",   // deeper blue
   terracotta: "#70091D", // brand burgundy: accents, today, focus rings
-  sage: "#9BB4E0",       // soft blue: secondary borders
-  sand: "#FFDE59",       // brand yellow: page background frame
+  sage: "#9BB4E0",       // soft blue: secondary borders on cards
+  sand: "#004AAD",       // page background (brand blue)
   card: "#FFFDF7",       // card surface: near-white for readable text
-  line: "#E8CE7A",       // warm gold: card borders and dividers
+  line: "#E8CE7A",       // warm gold: borders and dividers
+  yellow: "#FFDE59",     // brand yellow: welcome hero, current step
+  onSand: "#FFFFFF",     // text that sits directly on the blue page
 };
 
 // All type sizes route through a user-controlled scale (the A+ toggle).
