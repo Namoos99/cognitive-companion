@@ -20,21 +20,38 @@ const SLEEP = [
 ];
 
 export function Welcome({ S, greeting, doneToday, onStart, onProgress, onSettings }) {
+  // The welcome screen is a branded hero moment: burgundy card, white
+  // text, brand-yellow primary button. The task screens stay on the
+  // near-white card, because that's where the actual reading happens.
+  // Contrast here: white on burgundy 11.7:1, ink on yellow 12.7:1.
+  const card = {
+    ...S.card,
+    background: C.terracotta,
+    border: `1px solid ${C.terracotta}`,
+  };
+  const heading = { ...S.h1, color: "#FFFFFF" };
+  const body = { ...S.body, color: "#FFFFFF" };
+  const ghost = {
+    ...S.quietButton,
+    color: "#FFFFFF",
+    border: "2px solid rgba(255, 255, 255, 0.65)",
+  };
+
   return (
-    <div style={S.card}>
-      <h1 style={S.h1}>{greeting}.</h1>
-      <p style={S.body}>
+    <div style={card}>
+      <h1 style={heading}>{greeting}.</h1>
+      <p style={body}>
         {doneToday
           ? "You've already completed today's session — wonderful. You're welcome to do another round, or look back at your progress."
           : "Ready for today's session? It takes about five minutes, and you can go at your own pace."}
       </p>
-      <button style={S.bigButton()} onClick={onStart}>
+      <button style={S.bigButton(C.sand, C.forest)} onClick={onStart}>
         {doneToday ? "Do another session" : "Start today's session"}
       </button>
-      <button style={S.quietButton} onClick={onProgress}>
+      <button style={ghost} onClick={onProgress}>
         See my progress
       </button>
-      <button style={S.quietButton} onClick={onSettings}>
+      <button style={ghost} onClick={onSettings}>
         Settings
       </button>
     </div>

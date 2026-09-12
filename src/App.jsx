@@ -288,8 +288,9 @@ export default function App() {
                 style={{
                   height: "8px",
                   borderRadius: "4px",
-                  background:
-                    i < stepIndex ? C.sage : i === stepIndex ? C.terracotta : C.line,
+                  // White track on the yellow page; the current step is
+                  // burgundy so position stays obvious at a glance.
+                  background: i === stepIndex ? C.terracotta : "#FFFFFF",
                 }}
               />
               <span
